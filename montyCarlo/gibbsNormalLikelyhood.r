@@ -4,7 +4,7 @@
 #sigma: Inverse Gamma
 
 updateMu = function(n, yBar, sig2, mu_0, sig2_0){
-    sig2_1 = 1.0/ (n / sig2 + 1.0 / sig2_0)
+    sig2_1 = 1.0 / (n / sig2 + 1.0 / sig2_0)
     mu_1 = sig2_1 * (n * yBar / sig2 + mu_0 / sig2_0)
     rnorm(n=1, mean=mu_1, sd=sqrt(sig2_1))
 }
@@ -33,19 +33,20 @@ gibbs = function(y, nIter, init, prior){
         muNow = updateMu(n=n, yBar=yBar, sig2=sig2Now, mu_0=prior$mu_0, sig2_0=prior$sig2_0)
 
         sig2Out[i] = sig2Now
-        muOut[i] = muNow[i]
+        muOut[i] = muNow
     }
     cbind(mu=muOut, sig2=sig2Out)
 }
 
 
-y =  c(1.2, 1.4, -0.5, 0.3, 0.9, 2.3, 1.0, 0.1, 1.3, 1.9) 
+#y =  c(1.2, 1.4, -0.5, 0.3, 0.9, 2.3, 1.0, 0.1, 1.3, 1.9) 
+y = c(-0.2, -1.5, -5.3, 0.3, -0.8, -2.2)
 n = length(y)
 yBar = mean(y)
 
 prior = list()
 
-prior$mu_0 = 0.0
+prior$mu_0 = 1.0
 prior$sig2_0 = 1.0 #variance, prior confidence in mean 
 prior$n_0 = 2.0
 prior$s2_0 = 1.0
@@ -64,9 +65,11 @@ init = list()
 init$mu = 0.0
 
 
-post = gibbs(y=y,nIter=1000,init=init,prior=prior)
+post = gibbs(y=y,nIter=5000,init=init,prior=prior)
 head(post)
 tail(post)
 
 library("coda")
 plot(as.mcmc(post))
+
+mean(post[,1])

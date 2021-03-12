@@ -47,7 +47,9 @@ mh = function(n, yBar, nIter, muInit, candSd){
 
 
 ## Set up
-y = c(1.2, 1.4, -0.5, 0.3, 0.9, 2.3, 1.0, 0.1, 1.3, 1.9)
+# y = c(1.2, 1.4, -0.5, 0.3, 0.9, 2.3, 1.0, 0.1, 1.3, 1.9)
+y = c(-0.2, -1.5, -5.3, 0.3, -0.8, -2.2)
+
 
 yBar = mean(y)
 n= length(y)
@@ -60,7 +62,7 @@ curve(dt(x, df=1), lty=2, add=TRUE)
 ### posterior sampling 
 set.seed(43)
 #want acceptance rate between .23 and .5 with randomwalk MH
-post = mh(n=n, yBar=yBar, nIter=1e3, muInit=30.0, candSd=0.9)
+post = mh(n=n, yBar=yBar, nIter=1e3, muInit=1, candSd=1.5)
 str(post) #find what's in object
 
 library("coda")
@@ -71,3 +73,5 @@ traceplot(as.mcmc(post$mu))
 ### post analysis 
 post$muKeep = post$mu[-c(1:100)]
 plot(density(post$muKeep), xlim=c(-1.0,3.0))
+mean(post$mu)
+plot(density(post$mu))
