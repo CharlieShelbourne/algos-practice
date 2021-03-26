@@ -17,8 +17,8 @@ plot(predict(lmod), resid(lmod))
 
 library("rjags")
 
-# edu likelyhood = normal dist
-# prior income, young and urban coeficents in normal with large 1m variance to reduce correlations
+# edu likelyhood = normal dist, predict y given the mean calculated using the yuong, urban and income coefficents
+# normal prior for income, young and urban coeficents with large 1m variance to reduce correlations
 # prior on variance in an inverse gamma 
 mod1_string = " model {
     for (i in 1:length(education)) {
@@ -55,6 +55,8 @@ inits1 = function() {
 
 # run the model with 3 chains each starting with inits1 params
 mod1 = jags.model(textConnection(mod1_string), data=data1_jags, inits=inits1, n.chains=3)
+
+dic.samples(mod1, n.iter=100e3)
 
 # burn in period 
 update(mod1, 1000)
