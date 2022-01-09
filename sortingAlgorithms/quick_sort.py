@@ -1,43 +1,44 @@
+# choose a pivot point (middle) use to sort elements (two pointer method) 
+# swapping elements left of pivot that are > pivot with elements right of pivot if less than pivot 
+# find the partition point and reprat untill sorted 
 
-def quick_sort(sort_list, low_ind, high_ind):
+# average case O(nlogn)
+# worse case O(n^2)
 
-    
-    #recursion call for quick sort, split array using pivot 
+def quick_sort(arr):
+    qs(arr, 0, len(arr)-1)
 
-    #if i have length array <= 1 i must return 
+def qs(array, left, right): 
+    if left >= right:
+        return
+    # pick pivot point to be middle give better performance 
+    pivot = array[(left + right) // 2]
+    part = parition(array, left, right, pivot)
+    qs(array, left, part-1)
+    qs(array, part, right) 
 
-
-    if low_ind < high_ind: #if not true the array is length 1 or less 
+def parition(array, left, right, pivot):
+    while left <= right:
+        while array[left] < pivot:
+            left += 1
+        print(array, right)
+        while array[right] > pivot:
+            right -= 1
         
-        pi = partition(sort_list, low_ind, high_ind)
+        if left <= right:
+            array[left], array[right] = array[right], array[left]
+            left += 1
+            right -= 1
 
-        quick_sort(sort_list, low_ind, high_ind = pi - 1)
-        quick_sort(sort_list, low_ind = pi + 1, high_ind = high_ind)
+    return left
 
+# [2,6,3,7,8]
+# index 0 : [2,3,6,7,8], part = 2
+# 
+# [2,3], [6,7,8]
+# index 1 : [2,3], part = 1
+# index 2 : [6,7,8], part = 4
+# 
+# []
 
-def partition(sort_list, low_ind, high_ind):
-
-    #take low as lowest index - 1 
-    
-    #take the last number(pivot) and move it to its sorted position 
-    #all elements below pivot must be less than and all element ubove pivot must be greater than 
-    pivot = sort_list[high_ind]
-    i = low_ind - 1 
-
-    for j in range(low_ind, high_ind):
-        if sort_list[j] < pivot:
-            i += 1
-            sort_list[i], sort_list[j] = sort_list[j], sort_list[i]
-        else: 
-            continue
-    sort_list[i+1], sort_list[high_ind] = pivot, sort_list[i+1]
-    return i+1
-
-
-test_list = [0, 4, 2, 1]
-
-quick_sort(test_list, low_ind = 0, high_ind = 3)
-
-print(test_list)
-    
-
+print(quick_sort([2,6,3,7,8]))     
