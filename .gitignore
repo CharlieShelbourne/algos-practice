@@ -22,3 +22,10 @@ docs/site/
 # committed for packages, but should be committed for applications that require a static
 # environment.
 Manifest.toml
+
+
+/montyCarlo/callers.csv
+/montyCarlo/pctgrowth.csv
+/montyCarlo/world-happiness-report-2021.csv
+/montyCarlo/world-happiness-report-2021V2.csv
+/montyCarlo/world-happiness-report.csv
